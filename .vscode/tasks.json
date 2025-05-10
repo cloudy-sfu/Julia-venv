@@ -4,10 +4,16 @@
         {
             "label": "Run Julia",
             "type": "shell",
-            "command": "activate.bat",
+            "command": "powershell",
             "args": [
-                "${workspaceFolder}",
-                "${file}"
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/build_run.ps1",
+                "-script",
+                "${file}",
+                "-base_dir",
+                "${workspaceFolder}"
             ],
             "group": {
                 "kind": "build",

@@ -6,35 +6,53 @@
 
 ## Usage
 
-### Run scripts
+### Build & run
 
-To run a Julia script or open Julia interactive dialog, run the following command in Windows command prompt (CMD).
+To run a Julia script or open Julia interactive dialog, run the following command in Windows PowerShell 5.1.
 
 ```
-activate.bat [<base_dir> [<file_path>]]
+build_run.ps1 -script $script -base_dir $base_dir
 ```
 
 Arguments:
 
-- `base_dir`  means the root folder of Julia project. The files `Manifest.toml` and `Project.toml` will be automatically generated in this folder. If this argument is not provided, the current folder which triggers `activate.bat` script will be used.
-- `file_path` means the path of any Julia script in the Julia program `base_dir`.
+| Name        | Description                                                 | Required?                                         |
+| ----------- | ----------------------------------------------------------- | ------------------------------------------------- |
+| `$script`   | The relative path of any Julia script in the Julia project. | *Optional*  default: enter interactive Julia REPL |
+| `$base_dir` | The root folder of Julia project.                           | *Optional*  default: the current folder           |
 
-It is recommended to copy `activate.bat` and `get_julia_latest_version.ps1` to the user's Julia project.
+It is recommended to copy `build_run.ps1` to Julia project. Therefore `base_dir` is current directory, `script` is the relative path to program's root folder, and `base_dir` can be left blank.
+
+Behaviors:
+
+1. The files `Manifest.toml` and `Project.toml` will be automatically generated in `base_dir` . 
+2. It will search Julia instances in `$env:LOCALAPPDATA\Programs` (`$env:` means environment variables). If there doesn't exist one instance, it will require the user to manually input absolute path of Julia.
+3. If multiple Julia are installed in the default folder, the latest version will be used.
 
 To run the script in active tab in Visual Studio Code, 
 
-1. Copy `.vscode/tasks.json` in this program to `.vscode` of the user's Julia project.
+1. Copy the following files to corresponding address relative to the Julia program's root folder.
+    ```
+    .vscode/tasks.json
+    build_run.ps1
+    ```
 2. Press `Ctrl + Shift + P` and find "Tasks: Run Build Task", choose this action.
 
 ### Pluto
 
-To open Pluto notebook in `base_dir`, run the following command.
+To open Pluto notebook in `base_dir`, run the following command in Windows PowerShell 5.1.
 
 *If Pluto is not installed, this script will automatically install it.*
 
 ```
-call pluto.bat
+pluto.ps1 -base_dir $base_dir
 ```
+
+Arguments:
+
+| Name        | Description                       | Required?                               |
+| ----------- | --------------------------------- | --------------------------------------- |
+| `$base_dir` | The root folder of Julia project. | *Optional*  default: the current folder |
 
 In the Pluto home page, the dropdown of "Open a notebook" list files in `base_dir`.
 
