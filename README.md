@@ -8,18 +8,16 @@
 
 ### Build & run
 
-To run a Julia script or open Julia interactive dialog, run the following command in Windows PowerShell 5.1.
+To run a Julia script or open Julia interactive dialog, run `build_run.ps1` followed by arguments in Windows PowerShell 5.1.
 
-```
-build_run.ps1 -script $script -base_dir $base_dir
-```
+This program uses [Powershell style arguments](https://cloudy-sfu.github.io/Documentation/articles/cli_syntax.html).
 
 Arguments:
 
 | Name        | Description                                                 | Required?                                         |
 | ----------- | ----------------------------------------------------------- | ------------------------------------------------- |
-| `$script`   | The relative path of any Julia script in the Julia project. | *Optional*  default: enter interactive Julia REPL |
-| `$base_dir` | The root folder of Julia project.                           | *Optional*  default: the current folder           |
+| `-script`   | The relative path of any Julia script in the Julia project. | *Optional*  default: enter interactive Julia REPL |
+| `-base_dir` | The root folder of Julia project.                           | *Optional*  default: the current folder           |
 
 It is recommended to copy `build_run.ps1` to Julia project. Therefore `base_dir` is current directory, `script` is the relative path to program's root folder, and `base_dir` can be left blank.
 
@@ -40,19 +38,17 @@ To run the script in active tab in Visual Studio Code,
 
 ### Pluto
 
-To open Pluto notebook in `base_dir`, run the following command in Windows PowerShell 5.1.
+To open Pluto notebook in `base_dir`, run `pluto.ps1` followed by arguments in Windows PowerShell 5.1.
 
 *If Pluto is not installed, this script will automatically install it.*
 
-```
-pluto.ps1 -base_dir $base_dir
-```
+This program uses [Powershell style arguments](https://cloudy-sfu.github.io/Documentation/articles/cli_syntax.html).
 
 Arguments:
 
 | Name        | Description                       | Required?                               |
 | ----------- | --------------------------------- | --------------------------------------- |
-| `$base_dir` | The root folder of Julia project. | *Optional*  default: the current folder |
+| `-base_dir` | The root folder of Julia project. | *Optional*  default: the current folder |
 
 In the Pluto home page, the dropdown of "Open a notebook" list files in `base_dir`.
 
