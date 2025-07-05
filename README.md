@@ -10,7 +10,7 @@
 
 To run a Julia script or open Julia interactive dialog, run `build_run.ps1` followed by arguments in Windows PowerShell 5.1.
 
-This program uses [Powershell style arguments](https://cloudy-sfu.github.io/Documentation/articles/cli_syntax.html).
+This program uses [Powershell style arguments](https://gist.github.com/cloudy-sfu/dce5106496125096092c7a7cc7846f7b).
 
 Arguments:
 
@@ -42,7 +42,7 @@ To open Pluto notebook in `base_dir`, run `pluto.ps1` followed by arguments in W
 
 *If Pluto is not installed, this script will automatically install it.*
 
-This program uses [Powershell style arguments](https://cloudy-sfu.github.io/Documentation/articles/cli_syntax.html).
+This program uses [Powershell style arguments](https://gist.github.com/cloudy-sfu/dce5106496125096092c7a7cc7846f7b).
 
 Arguments:
 
