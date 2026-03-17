@@ -21,6 +21,25 @@
             },
             "problemMatcher": [],
             "detail": "Julia runs the single file or activate."
+        },
+        {
+            "label": "Start Julia Pluto",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/pluto.ps1",
+                "-base_dir",
+                "${workspaceFolder}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "detail": "Start Julia Pluto interactive environment."
         }
     ]
 }

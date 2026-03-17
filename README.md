@@ -1,7 +1,7 @@
 # Julia config
 
 ![](https://shields.io/badge/dependencies-Julia-purple)
-![](https://shields.io/badge/dependencies-Powershell_5.1-cyan)
+![](https://shields.io/badge/dependencies-Powershell_7-navy)
 ![](https://shields.io/badge/OS-Windows_10_64--bit-navy)
 
 ## Usage
@@ -18,13 +18,14 @@ Arguments:
 | ----------- | ----------------------------------------------------------- | ------------------------------------------------- |
 | `-script`   | The relative path of any Julia script in the Julia project. | *Optional*  default: enter interactive Julia REPL |
 | `-base_dir` | The root folder of Julia project.                           | *Optional*  default: the current folder           |
+| `-julia_path` | The absolute path to the `julia.exe` executable.            | *Optional*  default: auto-detects installation    |
 
 It is recommended to copy `build_run.ps1` to Julia project. Therefore `base_dir` is current directory, `script` is the relative path to program's root folder, and `base_dir` can be left blank.
 
 Behaviors:
 
 1. The files `Manifest.toml` and `Project.toml` will be automatically generated in `base_dir` . 
-2. It will search Julia instances in `$env:LOCALAPPDATA\Programs` (`$env:` means environment variables). If there doesn't exist one instance, it will require the user to manually input absolute path of Julia.
+2. It will use the provided `-julia_path`, or automatically search Julia instances in `$env:LOCALAPPDATA\Programs` (`$env:` means environment variables). If an instance is not found, the terminal will hint and require the user to manually input the absolute path of Julia.
 3. If multiple Julia are installed in the default folder, the latest version will be used.
 
 To run the script in active tab in Visual Studio Code, 
@@ -49,6 +50,7 @@ Arguments:
 | Name        | Description                       | Required?                               |
 | ----------- | --------------------------------- | --------------------------------------- |
 | `-base_dir` | The root folder of Julia project. | *Optional*  default: the current folder |
+| `-julia_path` | The absolute path to the `julia.exe` executable.            | *Optional*  default: auto-detects installation    |
 
 In the Pluto home page, the dropdown of "Open a notebook" list files in `base_dir`.
 

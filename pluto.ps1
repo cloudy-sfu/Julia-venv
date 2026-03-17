@@ -1,5 +1,23 @@
-﻿param(
-    [string]$base_dir
+﻿<#
+.SYNOPSIS
+Start the Julia project in Pluto.
+.DESCRIPTION
+To open a Pluto notebook in the Julia project, run pluto.ps1 followed by arguments.
+Behaviors:
+1. The files Manifest.toml and Project.toml will be automatically generated in base_dir.
+2. It will use the provided julia_path, or automatically search Julia instances in $env:LOCALAPPDATA\Programs. If not found, it will abort with an error.
+3. If multiple Julia instances are installed in the default folder, the latest version will be used.
+4. If Pluto is not installed in the local depot, this script will automatically install it.
+.PARAMETER base_dir
+The root folder of Julia project. Default: the current folder.
+.PARAMETER julia_path
+The absolute path to julia.exe executable. Default: auto-detects in LOCALAPPDATA.
+#>
+
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory=$false, HelpMessage="The root folder of Julia project.")] [string]$base_dir,
+    [Parameter(Mandatory=$false, HelpMessage="The absolute path to julia.exe executable.")] [string]$julia_path
 )
 
 # 1. Determine base directory: use provided path or default to current directory.
@@ -10,23 +28,19 @@ if (-not $base_dir) {
     $base_dir = (Resolve-Path -Path $base_dir).Path
 }
 
-# 2. Find the latest Julia installation under %LOCALAPPDATA%\Programs\Julia-*
-$julia_path = Get-ChildItem -Directory -Path "$env:LOCALAPPDATA\Programs" -Filter "Julia-*" |
-    Sort-Object { [version]($_.Name -replace '^Julia-','') } -Descending |
-    Select-Object -First 1 |
-    ForEach-Object { Join-Path $_.FullName "bin\julia.exe" }
-
-# If Julia not found, prompt the user for the path to julia.exe
-if (-not $julia_path -or -not (Test-Path $julia_path)) {
-    $julia_path = Read-Host "Julia installed path (path to `"...\bin\julia.exe`"):"
+# 2. Find Julia path
+# If not provided by the argument, search in the default LocalAppData directory
+if (-not $julia_path -or -not (Test-Path $julia_path -PathType Leaf)) {
+    $julia_path = Get-ChildItem -Directory -Path "$env:LOCALAPPDATA\Programs" -Filter "Julia-*" 2>$null |
+        Sort-Object { [version]($_.Name -replace '^Julia-','') } -Descending |
+        Select-Object -First 1 |
+        ForEach-Object { Join-Path $_.FullName "bin\julia.exe" }
 }
 
-# If the given Julia path still doesn’t exist, abort with an error.
-if (-not (Test-Path $julia_path)) {
-    Write-Error "Julia not found at $julia_path"
+# If Julia is still not found, abort with an error.
+if (-not (Test-Path $julia_path -PathType Leaf)) {
+    Write-Error "Julia parameter not provided, fallback to $julia_path, but still invalid."
     exit 1
-} else {
-    Echo "Found Julia at $julia_path"
 }
 
 # 3. Convert base directory path to Unix-style for Julia (replace '\' with '/')
@@ -46,9 +60,9 @@ if (Test-Path $activate_script) {
 }
 
 @"
-using Pkg;
-Pkg.activate("$base_dir_unix");
-Pkg.instantiate();
+using Pkg
+Pkg.activate("$base_dir_unix")
+Pkg.instantiate()
 "@ | Set-Content -Encoding UTF8 $activate_script
 
 & "$julia_path" --project="$base_dir" "$activate_script"
