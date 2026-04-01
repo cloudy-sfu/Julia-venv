@@ -1,0 +1,10 @@
+{
+    "Insert Infiltrator Breakpoint": {
+        "scope": "julia",
+        "prefix": "checkpoint",
+        "body": [
+            "@infiltrate"
+        ],
+        "description": "Insert @infiltrate macro for Infiltrator.jl"
+    }
+}
